@@ -48,11 +48,11 @@ select empno, ename, hiredate, now(), current_timestamp, current_date, current_t
 	, now() - hiredate as 근속기간
 from hr.emp
 )
-select * from temp_01;
-select *
+--select * from temp_01;
+select empno, ename, hiredate, now() - hiredate as 근속기간
 	, date_part('year', 근속기간)
-	, justify_interval(근속기간)
-	, age(hiredate)
+	, justify_interval(근속기간)	-- pg_typeof : interval , 한달을 30일 기준으로 계산
+	, age(hiredate)				-- age는 년월일로 나온다. interval 보다 age를 쓰는게 더 정확(날짜를 정확하게 계산)
 	, date_part('year', justify_interval(근속기간))||'년 '||date_part('month', justify_interval(근속기간))||'월' as 근속년월
 	, date_part('year', age(hiredate))||'년 '||date_part('month', age(hiredate))||'월' as 근속년월_01
 from temp_01;
