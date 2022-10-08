@@ -67,6 +67,9 @@ select ord_date, daily_sum
 from temp_02;
 
 -- 연속된 매출 일자에서 매출이 Null일때와 그렇지 않을 때의 Aggregate Analytic 결과 차이. 
+
+select generate_series('1996-07-04'::date, '1996-07-23'::date, '1 day'::interval)::date as ord_date; 
+
 with ref_days
 as (
 	select generate_series('1996-07-04'::date , '1996-07-23'::date, '1 day'::interval)::date as ord_date
@@ -84,4 +87,5 @@ temp_02 as (
 )
 select ord_date, daily_sum
 	, avg(daily_sum) over (order by ord_date rows between 2 preceding and current row) as ma_3days
+	, avg(coalesce(daily_sum,0)) over (order by ord_date rows between 2 preceding and current row) as ma_3days_01
 from temp_02;
