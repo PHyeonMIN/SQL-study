@@ -81,7 +81,7 @@ temp_01 as (
 	group by date_trunc('day', b.order_date)::date 
 ),
 temp_02 as (
-	select a.ord_date, b.daily_sum as daily_sum
+	select a.ord_date, b.daily_sum as daily_sum			-- coalesce(b.daily_sum,0) 해주는게 맞다.
 	from ref_days a
 		left join temp_01 b on a.ord_date = b.ord_date
 )
