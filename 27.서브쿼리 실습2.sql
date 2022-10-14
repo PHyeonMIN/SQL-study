@@ -88,3 +88,28 @@ from (
 ) a 
 where a.amount >= a.avg_amount
 order by customer_id, amount;
+
+/************************************************
+ Null값이 있는 컬럼의 not in과 not exists 차이 실습
+ *************************************************/
+
+select * from hr.emp where deptno in (20, 30, null);
+
+select * from hr.emp where deptno = 20 or deptno=30 or deptno = null;
+
+
+-- 테스트를 위한 임의의 테이블 생성. 
+drop table if exists nw.region;
+
+create table nw.region
+as
+select ship_region as region_name from nw.orders 
+group by ship_region 
+;
+
+-- 새로운 XX값을 region테이블에 입력. 
+insert into nw.region values('XX');
+
+commit;
+
+select * from nw.region;
